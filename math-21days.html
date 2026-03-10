@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初一数学 · 21天方程特训</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 600px; margin: 0 auto; }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .header h1 { font-size: 28px; margin-bottom: 10px; }
+        .day-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .day-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #11998e;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        .question {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        .question-number {
+            display: inline-block;
+            background: #11998e;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-size: 14px;
+            margin-right: 8px;
+        }
+        .answer {
+            background: #e8f5e9;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #2e7d32;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .answer:hover { background: #c8e6c9; }
+        .answer::before { content: "📝 答案："; font-weight: bold; }
+        .type-tag {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        .hidden { display: none; }
+        .nav { display: flex; gap: 10px; margin-bottom: 20px; }
+        .nav-btn {
+            flex: 1;
+            padding: 15px;
+            background: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #11998e;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-btn:hover { background: #f5f5f5; }
+        .progress {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📐 初一数学 · 21天方程特训</h1>
+            <p>浙教版 · 初一（下）</p>
+        </div>
+        
+        <div class="nav">
+            <button class="nav-btn" onclick="showDay(1)">Day1-7</button>
+            <button class="nav-btn" onclick="showDay(8)">Day8-14</button>
+            <button class="nav-btn" onclick="showDay(15)">Day15-21</button>
+        </div>
+        
+        <div class="progress" id="progress">选择上方日期开始练习</div>
+
+        <!-- Day 1 -->
+        <div id="day1" class="day-card hidden">
+            <div class="day-title">📅 Day 1 · 一元一次方程基础</div>
+            <div class="type-tag">一元一次方程</div>
+            <div class="question"><span class="question-number">1</span>3x + 7 = 22</div>
+            <div class="question"><span class="question-number">2</span>5x - 12 = 18</div>
+            <div class="question"><span class="question-number">3</span>2(x + 3) = 16</div>
+            <div class="question"><span class="question-number">4</span>4x - 7 = 3x + 5</div>
+            <div class="question"><span class="question-number">5</span>7(x - 2) = 3x + 10</div>
+            <div class="answer" onclick="toggle(this)">x=5</div>
+        </div>
+
+        <!-- Day 2 -->
+        <div id="day2" class="day-card hidden">
+            <div class="day-title">📅 Day 2 · 一元一次方程</div>
+            <div class="type-tag">一元一次方程</div>
+            <div class="question"><span class="question-number">1</span>6x + 4 = 2x + 20</div>
+            <div class="question"><span class="question-number">2</span>8(x - 1) = 4x + 16</div>
+            <div class="question"><span class="question-number">3</span>3x + 15 = 7x - 5</div>
+            <div class="question"><span class="question-number">4</span>5(x + 2) = 3(x + 8)</div>
+            <div class="question"><span class="question-number">5</span>9x - 7 = 6x + 11</div>
+            <div class="answer" onclick="toggle(this)">x=4</div>
+        </div>
+
+        <!-- Day 3 -->
+        <div id="day3" class="day-card hidden">
+            <div class="day-title">📅 Day 3 · 一元一次方程应用</div>
+            <div class="type-tag">应用题</div>
+            <div class="question"><span class="question-number">1</span>小明有x本书，小红有25本，比小明的2倍少3本，求x</div>
+            <div class="question"><span class="question-number">2</span>一个数x的3倍减去5等于22，求这个数</div>
+            <div class="question"><span class="question-number">3</span>甲有x元，乙比甲多15元，两人共85元，求x</div>
+            <div class="question"><span class="question-number">4</span>一个数x的2倍与3的和等于27</div>
+            <div class="question"><span class="question-number">5</span>小明买书花了x元，还剩15元，原来有50元</div>
+            <div class="answer" onclick="toggle(this)">1.x=14 2.x=9 3.x=35 4.x=12 5.x=35</div>
+        </div>
+
+        <!-- Day 4 -->
+        <div id="day4" class="day-card hidden">
+            <div class="day-title">📅 Day 4 · 二元一次方程组（代入法）</div>
+            <div class="type-tag">二元一次方程组</div>
+            <div class="question"><span class="question-number">1</span>y = x + 3, 2x + y = 12</div>
+            <div class="question"><span class="question-number">2</span>y = 2x - 1, x + y = 8</div>
+            <div class="question"><span class="question-number">3</span>x = y + 4, 3x + 2y = 17</div>
+            <div class="question"><span class="question-number">4</span>y = 3x, x + 2y = 21</div>
+            <div class="question"><span class="question-number">5</span>x = y - 2, 2x + 3y = 16</div>
+            <div class="answer" onclick="toggle(this)">1.x=3,y=6 2.x=3,y=5 3.x=7,y=3 4.x=3,y=9 5.x=2,y=4</div>
+        </div>
+
+        <!-- Day 5 -->
+        <div id="day5" class="day-card hidden">
+            <div class="day-title">📅 Day 5 · 二元一次方程组（加减法）</div>
+            <div class="type-tag">二元一次方程组</div>
+            <div class="question"><span class="question-number">1</span>x + y = 8, x - y = 2</div>
+            <div class="question"><span class="question-number">2</span>2x + y = 10, x + y = 7</div>
+            <div class="question"><span class="question-number">3</span>3x + 2y = 16, x - 2y = -1</div>
+            <div class="question"><span class="question-number">4</span>2x + 3y = 13, x + 3y = 10</div>
+            <div class="question"><span class="question-number">5</span>4x + y = 14, 2x - y = 4</div>
+            <div class="answer" onclick="toggle(this)">1.x=5,y=3 2.x=3,y=4 3.x=3,y=3.5 4.x=3,y=7/3 5.x=3,y=2</div>
+        </div>
+
+        <!-- Day 6 -->
+        <div id="day6" class="day-card hidden">
+            <div class="day-title">📅 Day 6 · 二元一次方程组应用</div>
+            <div class="type-tag">应用题</div>
+            <div class="question"><span class="question-number">1</span>篮球x元，足球y元，篮球比足球贵15元，共75元</div>
+            <div class="question"><span class="question-number">2</span>甲x岁，乙y岁，甲比乙大3岁，两人共35岁</div>
+            <div class="question"><span class="question-number">3</span>苹果x元/斤，香蕉y元/斤，3斤苹果+2斤香蕉=20元，2斤苹果+3斤香蕉=18元</div>
+            <div class="question"><span class="question-number">4</span>有x个大人，y个小孩，共100人，门票大人30元，小孩10元，收入1800元</div>
+            <div class="question"><span class="question-number">5</span>甲车间x人，乙车间y人，甲比乙少20人，共180人</div>
+            <div class="answer" onclick="toggle(this)">1.x=45,y=30 2.x=19,y=16 3.苹果4元，香蕉2元 4.大人50人，小孩50人 5.甲80人，乙100人</div>
+        </div>
+
+        <!-- Day 7 -->
+        <div id="day7" class="day-card hidden">
+            <div class="day-title">📅 Day 7 · 综合练习</div>
+            <div class="type-tag">综合</div>
+            <div class="question"><span class="question-number">1</span>5x + 3 = 2x + 15</div>
+            <div class="question"><span class="question-number">2</span>3(x + 2) = 2(x + 7)</div>
+            <div class="question"><span class="question-number">3</span>x + y = 10, 2x - y = 8</div>
+            <div class="question"><span class="question-number">4</span>4x - y = 7, 2x + y = 5</div>
+            <div class="question"><span class="question-number">5</span>一个数x的50%比它的1/3多4</div>
+            <div class="answer" onclick="toggle(this)">1.x=4 2.x=8 3.x=6,y=4 4.x=2,y=1 5.x=24</div>
+        </div>
+
+        <!-- Day 8 -->
+        <div id="day8" class="day-card hidden">
+            <div class="day-title">📅 Day 8 · 一元一次不等式（基础）</div>
+            <div class="type-tag">不等式</div>
+            <div class="question"><span class="question-number">1</span>x + 5 > 8</div>
+            <div class="question"><span class="question-number">2</span>3x ≤ 12</div>
+            <div class="question"><span class="question-number">3</span>2x - 4 > 6</div>
+            <div class="question"><span class="question-number">4</span>5x + 3 < 18</div>
+            <div class="question"><span class="question-number">5</span>4x - 7 ≥ 13</div>
+            <div class="answer" onclick="toggle(this)">1.x>3 2.x≤4 3.x>5 4.x<3 5.x≥5</div>
+        </div>
+
+        <!-- Day 9 -->
+        <div id="day9" class="day-card hidden">
+            <div class="day-title">📅 Day 9 · 一元一次不等式</div>
+            <div class="type-tag">不等式</div>
+            <div class="question"><span class="question-number">1</span>3x + 2 > 2x + 7</div>
+            <div class="question"><span class="question-number">2</span>5x - 3 ≤ 2x + 9</div>
+            <div class="question"><span class="question-number">3</span>4(x - 1) > 2(x + 3)</div>
+            <div class="question"><span class="question-number">4</span>2(x + 5) ≤ 3(x - 1)</div>
+            <div class="question"><span class="question-number">5</span>7x + 1 > 5x + 9</div>
+            <div class="answer" onclick="toggle(this)">1.x>5 2.x≤4 3.x>5 4.x≥13 5.x>4</div>
+        </div>
+
+        <!-- Day 10 -->
+        <div id="day10" class="day-card hidden">
+            <div class="day-title">📅 Day 10 · 不等式应用</div>
+            <div class="type-tag">应用题</div>
+            <div class="question"><span class="question-number">1</span>x + 8 > 15，求x的最小整数解</div>
+            <div class="question"><span class="question-number">2</span>3x ≤ 12，求x的最大整数解</div>
+            <div class="question"><span class="question-number">3</span>小明有x元，买书花了8元，还剩至少5元</div>
+            <div class="question"><span class="question-number">4</span>一个数x的2倍大于10</div>
+            <div class="question"><span class="question-number">5</span>3x + 2 < 20，求x的正整数解</div>
+            <div class="answer" onclick="toggle(this)">1.x≥8 2.x≤4 3.x≥13 4.x>5 5.x=1,2,3,4,5,6</div>
+        </div>
+
+        <!-- Day 11-21 简化版 -->
+        <div id="day11" class="day-card hidden">
+            <div class="day-title">📅 Day 11 · 一元一次方程综合</div>
+            <div class="question"><span class="question-number">1</span>6x - 5 = 4x + 7</div>
+            <div class="question"><span class="question-number">2</span>3(x - 2) = 2(x + 5)</div>
+            <div class="question"><span class="question-number">3</span>5x + 8 = 2x - 4</div>
+            <div class="question"><span class="question-number">4</span>4(x + 1) = 3(x + 3)</div>
+            <div class="question"><span class="question-number">5</span>7x - 9 = 3x + 11</div>
+            <div class="answer" onclick="toggle(this)">1.x=6 2.x=16 3.x=-4 4.x=5 5.x=5</div>
+        </div>
+
+        <div id="day12" class="day-card hidden">
+            <div class="day-title">📅 Day 12 · 二元一次方程组</div>
+            <div class="question"><span class="question-number">1</span>x + y = 9, x - y = 3</div>
+            <div class="question"><span class="question-number">2</span>2x + y = 11, x + y = 7</div>
+            <div class="question"><span class="question-number">3</span>3x + y = 14, x + y = 6</div>
+            <div class="question"><span class="question-number">4</span>4x + y = 17, x + y = 5</div>
+            <div class="question"><span class="question-number">5</span>2x + 3y = 13, x + 3y = 8</div>
+            <div class="answer" onclick="toggle(this)">1.x=6,y=3 2.x=4,y=3 3.x=4,y=2 4.x=4,y=1 5.x=5,y=1</div>
+        </div>
+
+        <div id="day13" class="day-card hidden">
+            <div class="day-title">📅 Day 13 · 代入法解方程组</div>
+            <div class="question"><span class="question-number">1</span>y = x + 2, x + 2y = 10</div>
+            <div class="question"><span class="question-number">2</span>x = y - 3, 2x + y = 9</div>
+            <div class="question"><span class="question-number">3</span>y = 2x + 1, 3x + y = 11</div>
+            <div class="question"><span class="question-number">4</span>x = 3y - 1, 2x + y = 8</div>
+            <div class="question"><span class="question-number">5</span>y = x + 5, 4x + y = 15</div>
+            <div class="answer" onclick="toggle(this)">1.x=2,y=4 2.x=2,y=5 3.x=2,y=5 4.x=3,y=2 5.x=2,y=7</div>
+        </div>
+
+        <div id="day14" class="day-card hidden">
+            <div class="day-title">📅 Day 14 · 综合练习</div>
+            <div class="question"><span class="question-number">1</span>4x + 6 = 2x + 14</div>
+            <div class="question"><span class="question-number">2</span>5x - 8 = 3x + 4</div>
+            <div class="question"><span class="question-number">3</span>x + y = 7, 2x - y = 5</div>
+            <div class="question"><span class="question-number">4</span>3x + 2y = 12, x - 2y = -2</div>
+            <div class="question"><span class="question-number">5</span>一个数x的3倍比20大</div>
+            <div class="answer" onclick="toggle(this)">1.x=4 2.x=6 3.x=4,y=3 4.x=2.5,y=2.25 5.x>20/3</div>
+        </div>
+
+        <div id="day15" class="day-card hidden">
+            <div class="day-title">📅 Day 15 · 不等式综合</div>
+            <div class="question"><span class="question-number">1</span>2x + 5 > 15</div>
+            <div class="question"><span class="question-number">2</span>3x - 7 ≤ 14</div>
+            <div class="question"><span class="question-number">3</span>4x + 1 > 2x + 9</div>
+            <div class="question"><span class="question-number">4</span>5x - 3 ≤ 3x + 7</div>
+            <div class="question"><span class="question-number">5</span>6x + 4 > 4x + 12</div>
+            <div class="answer" onclick="toggle(this)">1.x>5 2.x≤7 3.x>4 4.x≤5 5.x>4</div>
+        </div>
+
+        <div id="day16" class="day-card hidden">
+            <div class="day-title">📅 Day 16 · 方程应用题</div>
+            <div class="question"><span class="question-number">1</span>甲有x元，乙有y元，甲给乙10元后两人相等，原来甲比乙多多少？</div>
+            <div class="question"><span class="question-number">2</span>一个数x的20%等于15</div>
+            <div class="question"><span class="question-number">3</span>x的倒数是5，求x</div>
+            <div class="question"><span class="question-number">4</span>一个数x的1/3比它的1/2少5</div>
+            <div class="question"><span class="question-number">5</span>父子年龄和50岁，父亲比儿子大26岁</div>
+            <div class="answer" onclick="toggle(this)">1.20元 2.x=75 3.x=1/5 4.x=30 5.父亲38岁，儿子12岁</div>
+        </div>
+
+        <div id="day17" class="day-card hidden">
+            <div class="day-title">📅 Day 17 · 复习</div>
+            <div class="question"><span class="question-number">1</span>7x + 4 = 3x + 20</div>
+            <div class="question"><span class="question-number">2</span>4(x - 2) = 3(x + 1)</div>
+            <div class="question"><span class="question-number">3</span>x + y = 11, x - y = 3</div>
+            <div class="question"><span class="question-number">4</span>2x + 3y = 12, x + 3y = 9</div>
+            <div class="question"><span class="question-number">5</span>5x - 2 > 3x + 8</div>
+            <div class="answer" onclick="toggle(this)">1.x=4 2.x=11 3.x=7,y=4 4.x=3,y=2 5.x>5</div>
+        </div>
+
+        <div id="day18" class="day-card hidden">
+            <div class="day-title">📅 Day 18 · 复习</div>
+            <div class="question"><span class="question-number">1</span>8x - 5 = 4x + 15</div>
+            <div class="question"><span class="question-number">2</span>6(x + 1) = 4(x + 5)</div>
+            <div class="question"><span class="question-number">3</span>x + 2y = 10, x - 2y = 2</div>
+            <div class="question"><span class="question-number">4</span>3x + y = 13, 2x - y = 3</div>
+            <div class="question"><span class="question-number">5</span>4x + 3 ≤ 2x + 15</div>
+            <div class="answer" onclick="toggle(this)">1.x=5 2.x=7 3.x=6,y=2 4.x=4,y=1 5.x≤6</div>
+        </div>
+
+        <div id="day19" class="day-card hidden">
+            <div class="day-title">📅 Day 19 · 综合</div>
+            <div class="question"><span class="question-number">1</span>9x - 7 = 5x + 13</div>
+            <div class="question"><span class="question-number">2</span>5(x - 3) = 3(x + 7)</div>
+            <div class="question"><span class="question-number">3</span>x + y = 12, 2x + y = 19</div>
+            <div class="question"><span class="question-number">4</span>4x + y = 15, 3x - y = 5</div>
+            <div class="question"><span class="question-number">5</span>7x + 1 > 5x + 11</div>
+            <div class="answer" onclick="toggle(this)">1.x=5 2.x=18 3.x=7,y=5 4.x=4,y=-1 5.x>5</div>
+        </div>
+
+        <div id="day20" class="day-card hidden">
+            <div class="day-title">📅 Day 20 · 综合</div>
+            <div class="question"><span class="question-number">1</span>10x + 3 = 6x + 19</div>
+            <div class="question"><span class="question-number">2</span>7(x - 2) = 5(x + 4)</div>
+            <div class="question"><span class="question-number">3</span>x + y = 13, x - y = 5</div>
+            <div class="question"><span class="question-number">4</span>5x + 2y = 16, 3x - 2y = 4</div>
+            <div class="question"><span class="question-number">5</span>6x - 4 ≤ 4x + 10</div>
+            <div class="answer" onclick="toggle(this)">1.x=4 2.x=17 3.x=9,y=4 4.x=2.5,y=1.25 5.x≤7</div>
+        </div>
+
+        <div id="day21" class="day-card hidden">
+            <div class="day-title">🎉 Day 21 · 最终测试</div>
+            <div class="question"><span class="question-number">1</span>12x - 5 = 7x + 15</div>
+            <div class="question"><span class="question-number">2</span>8(x - 1) = 6(x + 3)</div>
+            <div class="question"><span class="question-number">3</span>x + y = 15, 2x - y = 12</div>
+            <div class="question"><span class="question-number">4</span>6x + y = 20, 4x - y = 8</div>
+            <div class="question"><span class="question-number">5</span>5x + 3 > 3x + 13</div>
+            <div class="answer" onclick="toggle(this)">1.x=4 2.x=13 3.x=9,y=6 4.x=4,y=-4 5.x>5</div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentStart = 1;
+        
+        function showDay(day) {
+            // 隐藏所有天
+            for (let i = 1; i <= 21; i++) {
+                document.getElementById('day' + i).classList.add('hidden');
+            }
+            
+            // 显示选定的那天
+            document.getElementById('day' + day).classList.remove('hidden');
+            
+            // 更新进度
+            document.getElementById('progress').textContent = '今日练习：Day ' + day + ' / 21';
+            
+            // 保存进度
+            localStorage.setItem('mathDay', day);
+        }
+        
+        function toggle(el) {
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+        
+        // 加载上次进度
+        const savedDay = localStorage.getItem('mathDay');
+        if (savedDay) {
+            document.getElementById('progress').textContent = '上次练习：Day ' + savedDay + '，继续加油！';
+        }
+    </script>
+</body>
+</html>
