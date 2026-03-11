@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初一数学逆袭计划 - 刷题网站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 头部 */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+        }
+        
+        /* 统计卡片 */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-card .label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        /* 导航 */
+        .nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .nav-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* 题目卡片 */
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            display: none;
+        }
+        
+        .question-card.active {
+            display: block;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .question-number {
+            font-size: 1.2rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .question-difficulty {
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+        
+        .difficulty-easy {
+            background: #e8f5e9;
+            color: #4caf50;
+        }
+        
+        .difficulty-medium {
+            background: #fff3e0;
+            color: #ff9800;
+        }
+        
+        .difficulty-hard {
+            background: #ffebee;
+            color: #f44336;
+        }
+        
+        .question-type {
+            background: #e3f2fd;
+            color: #2196f3;
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+        }
+        
+        .question-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        
+        .question-content img {
+            max-width: 100%;
+            display: block;
+            margin: 15px 0;
+        }
+        
+        /* 选项 */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        
+        .option.selected {
+            border-color: #667eea;
+            background: #e8ebff;
+        }
+        
+        .option.correct {
+            border-color: #4caf50;
+            background: #e8f5e9;
+        }
+        
+        .option.wrong {
+            border-color: #f44336;
+            background: #ffebee;
+        }
+        
+        .option-letter {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        /* 解答题 */
+        .answer-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        /* 按钮 */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd6;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        /* 答案解析 */
+        .analysis {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            display: none;
+        }
+        
+        .analysis.show {
+            display: block;
+        }
+        
+        .analysis-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .analysis-content {
+            line-height: 1.8;
+            color: #555;
+        }
+        
+        /* 错题本 */
+        .wrong-book {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            display: none;
+        }
+        
+        .wrong-book.show {
+            display: block;
+        }
+        
+        .wrong-item {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .wrong-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .wrong-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            color: #999;
+        }
+        
+        /* 底部 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 10px;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .page-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .page-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        /* 学习记录 */
+        .records {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            display: none;
+        }
+        
+        .records.show {
+            display: block;
+        }
+        
+        .record-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .record-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* 徽章 */
+        .badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            background: #f0f0f0;
+            color: #666;
+        }
+        
+        .badge.earned {
+            background: #667eea;
+            color: white;
+        }
+        
+        @media (max-width: 600px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .question-content {
+                font-size: 1rem;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h1>📚 初一数学逆袭计划</h1>
+            <p>浙教版 · 初一下 · 第一、二单元</p>
+        </div>
+        
+        <!-- 统计 -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="number" id="totalQuestions">150</div>
+                <div class="label">总题数</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="completedQuestions">0</div>
+                <div class="label">已完成</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="correctRate">0%</div>
+                <div class="label">正确率</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="wrongCount">0</div>
+                <div class="label">错题数</div>
+            </div>
+        </div>
+        
+        <!-- 导航 -->
+        <div class="nav">
+            <button class="nav-btn active" onclick="showSection('practice')">🎯 刷题</button>
+            <button class="nav-btn" onclick="showSection('wrongbook')">📝 错题本</button>
+            <button class="nav-btn" onclick="showSection('records')">📊 记录</button>
+        </div>
+        
+        <!-- 刷题区域 -->
+        <div class="question-card active" id="practiceSection">
+            <div class="question-header">
+                <div>
+                    <span class="question-number" id="questionNum">第1题</span>
+                    <span class="question-type" id="questionType">选择题</span>
+                </div>
+                <span class="question-difficulty difficulty-easy" id="questionDifficulty">基础题</span>
+            </div>
+            
+            <div class="question-content" id="questionContent">
+                加载中...
+            </div>
+            
+            <div class="options" id="optionsContainer">
+                <!-- 选项通过JS渲染 -->
+            </div>
+            
+            <textarea class="answer-input" id="answerInput" placeholder="请输入你的答案..." style="display:none;"></textarea>
+            
+            <div class="analysis" id="analysis">
+                <div class="analysis-title">📖 答案解析</div>
+                <div class="analysis-content" id="analysisContent"></div>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-primary" id="submitBtn" onclick="submitAnswer()">提交答案</button>
+                <button class="btn btn-secondary" onclick="nextQuestion()">下一题</button>
+            </div>
+            
+            <!-- 分页 -->
+            <div class="pagination" id="pagination"></div>
+        </div>
+        
+        <!-- 错题本 -->
+        <div class="wrong-book" id="wrongbookSection">
+            <h2 style="margin-bottom: 20px;">📝 错题本</h2>
+            <div id="wrongList">
+                <div class="empty-state">暂无错题，继续加油！💪</div>
+            </div>
+        </div>
+        
+        <!-- 学习记录 -->
+        <div class="records" id="recordsSection">
+            <h2 style="margin-bottom: 20px;">📊 学习记录</h2>
+            <div id="recordsList">
+                <div class="empty-state">暂无学习记录</div>
+            </div>
+            <div class="badges">
+                <div class="badge" id="badge1">🌟 首次答题</div>
+                <div class="badge" id="badge2">📚 完成10题</div>
+                <div class="badge" id="badge3">🎯 正确率80%</div>
+                <div class="badge" id="badge4">🔥 连续3天</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 题目数据 - 平行线 + 二元一次方程组
+        const questions = [
+            // ========== 第一章：平行线 ==========
+            {
+                id: 1,
+                unit: 1,
+                type: "选择题",
+                difficulty: "easy",
+                difficultyText: "基础题",
+                content: "在同一平面内，两条直线的位置关系有（ ）",
+                options: ["A. 相交和平行", "B. 垂直和平行", "C. 相交、垂直和平行", "D. 以上都不对"],
+                answer: "A",
+                analysis: "在同一平面内，两条直线要么相交，要么平行，没有第三种情况。垂直是相交的一种特殊形式。"
+            },
+            {
+                id: 2,
+                unit: 1,
+                type: "选择题",
+                difficulty: "easy",
+                difficultyText: "基础题",
+                content: "下列说法正确的是（ ）<br>A. 两条直线不相交就平行<br>B. 平行于同一条直线的两条直线平行<br>C. 如果a∥b，b∥c，则a∥c<br>D. 以上都正确",
+                options: ["A. 两条直线不相交就平行", "B. 平行于同一条直线的两条直线平行", "C. 如果a∥b，b∥c，则a∥c", "D. 以上都正确"],
+                answer: "D",
+                analysis: "平行具有传递性：如果a∥b，b∥c，则a∥c。这是平行线的重要性质。"
+            },
+            {
+                id: 3,
+                unit: 1,
+                type: "选择题",
+                difficulty: "medium",
+                difficultyText: "进阶题",
+                content: "如图，直线AB∥CD，∠1=50°，则∠2的度数是（ ）<br><img src='https://via.placeholder.com/200x100?text=图示：两条平行线+一条截线' alt='图示'>",
+                options: ["A. 40°", "B. 50°", "C. 130°", "D. 180°"],
+                answer: "B",
+                analysis: "根据平行线的性质：同位角相等。∠1和∠2是同位角，所以∠2=∠1=50°。"
+            },
+            {
+                id: 4,
+                unit: 1,
+                type: "解答题",
+                difficulty: "medium",
+                difficultyText: "进阶题",
+                content: "已知：如图，AB∥CD，∠1=∠2。求证：∠E=∠F。\n\n请完成证明过程：\n\n证明：∵AB∥CD（已知）\n∴∠1=∠3（____________）\n又∵∠1=∠2（已知）\n∴∠2=∠3（等量代换）\n∴∠E=∠F（____________）",
+                answer: "两直线平行，同位角相等；同位角相等，两直线平行",
+                analysis: "第一空：平行线的性质：两直线平行，同位角相等\n第二空：平行线的判定：同位角相等，两直线平行"
+            },
+            {
+                id: 5,
+                unit: 1,
+                type: "选择题",
+                difficulty: "easy",
+                difficultyText: "基础题",
+                content: "下列条件中，能判断两条直线平行的是（ ）<br>①同位角相等 ②内错角相等 ③同旁内角互补 ④同旁内角相等",
+                options: ["A. ①②③", "B. ①②④", "C. ①③④", "D. ②③④"],
+                answer: "A",
+                analysis: "同位角相等、内错角相等、同旁内角互补都能判定两直线平行。同旁内角相等不能判定平行。"
+            },
+            // ========== 第二章：二元一次方程组 ==========
+            {
+                id: 6,
+                unit: 2,
+                type: "选择题",
+                difficulty: "easy",
+                difficultyText: "基础题",
+                content: "下列方程中是二元一次方程的是（ ）",
+                options: ["A. x + y = 3", "B. xy = 6", "C. x² + y = 1", "D. 1/x + y = 2"],
+                answer: "A",
+                analysis: "二元一次方程的定义：含有两个未知数，未知数的次数都是1。选项A符合；B是二次；C有x²；D是分式方程。"
+            },
+            {
+                id: 7,
+                unit: 2,
+                type: "选择题",
+                difficulty: "easy",
+                difficultyText: "基础题",
+                content: "用代入法解方程组<br>① y = x + 2<br>② 2x + y = 8<br>最简便的解法是（ ）",
+                options: ["A. 将①代入②", "B. 将②代入①", "C. 先消元", "D. 无法确定"],
+                answer: "A",
+                analysis: "①已经用x表示y，直接代入②即可：2x + (x+2) = 8，解得x=2，y=4。"
+            },
+            {
+                id: 8,
+                unit: 2,
+                type: "选择题",
+                difficulty: "medium",
+                difficultyText: "进阶题",
+                content: "已知方程组 ax + by = 5, cx + dy = -2 的解为 x = 1, y = -1，则a、c、d的值为（ ）",
+                options: ["A. a=3, c=1, d=1", "B. a=3, c=-1, d=1", "C. a=2, c=1, d=-1", "D. a=1, c=3, d=1"],
+                answer: "B",
+                analysis: "将x=1, y=-1代入：a-b=5, c-d=-2。令a=3, 则b=-2；令c=-1, d=1，则-1-1=-2成立。"
+            },
+            {
+                id: 9,
+                unit: 2,
+                type: "解答题",
+                difficulty: "medium",
+                difficultyText: "进阶题",
+                content: "某校组织学生春游，若每辆车坐45人，则有15人没车坐；若每辆车坐60人，则刚好空出一辆车。问有多少学生？",
+                answer: "设学生x人，车y辆。\n45y + 15 = x\n60(y-1) = x\n解得：x = 240，y = 5\n答：共有240名学生。",
+                analysis: "设学生x人，车y辆。根据题意：\n45y + 15 = x（每车45人，多15人）\n60(y-1) = x（每车60人，空1车）\n解方程组得：x=240，y=5"
+            },
+            {
+                id: 10,
+                unit: 2,
+                type: "解答题",
+                difficulty: "hard",
+                difficultyText: "挑战题",
+                content: "甲、乙两人相距100米，甲每秒跑5米，乙每秒跑3米。如果两人同时同向出发，甲追上乙需要多少秒？如果两人同时相向出发，需要多少秒相遇？",
+                answer: "（1）同向：100 ÷ (5-3) = 50秒\n（2）相向：100 ÷ (5+3) = 12.5秒",
+                analysis: "（1）同向追击：追及距离÷速度差=追及时间\n（2）相向相遇：相遇距离÷速度和=相遇时间"
+            }
+        ];
+
+        // 扩展更多题目（模拟2021-2025年真题风格）
+        const moreQuestions = [
+            {id: 11, unit: 1, type: "选择题", difficulty: "easy", difficultyText: "基础题", content: "已知∠1和∠2是同位角，且∠1=60°，则∠2=（ ）", options: ["A. 60°", "B. 120°", "C. 无法确定", "D. 30°"], answer: "C", analysis: "同位角相等必须是在两直线平行的前提下，否则不能确定。"},
+            {id: 12, unit: 1, type: "选择题", difficulty: "medium", difficultyText: "进阶题", content: "直线AB与CD平行，∠1=110°，则∠2的补角是（ ）", options: ["A. 70°", "B. 110°", "C. 180°", "D. 55°"], answer: "A", analysis: "∠1的补角=180°-110°=70°。"},
+            {id: 13, unit: 2, type: "选择题", difficulty: "easy", difficultyText: "基础题", content: "方程3x - 2y = 5 与下列哪个方程组成方程组有唯一解？", options: ["A. 6x - 4y = 10", "B. 6x - 4y = 5", "C. 9x - 6y = 15", "D. x - 2y/3 = 5/3"], answer: "B", analysis: "唯一解要求两方程不成比例。A、C比例相同，无限解；D就是原方程本身。"},
+            {id: 14, unit: 2, type: "选择题", difficulty: "medium", difficultyText: "进阶题", content: "小明买了3支铅笔和2支钢笔共用去20元，小红买5支铅笔和1支钢笔共用去13元，设铅笔x元，钢笔y元，正确的方程组是（ ）", options: ["A. 3x+2y=20; 5x+y=13", "B. 3x+2y=20; 5x+y=13", "C. 2x+3y=20; x+5y=13", "D. 2x+3y=20; 5x+y=13"], answer: "A", analysis: "3支铅笔+2支钢笔=20元 → 3x+2y=20；5支铅笔+1支钢笔=13元 → 5x+y=13。"},
+            {id: 15, unit: 2, type: "解答题", difficulty: "hard", difficultyText: "挑战题", content: "一个两位数，十位数字与个位数字的和为13，如果把十位数字与个位数字交换位置，所得的新数比原数大27。求原数。", answer: "设原数两位为10a+b，则新数为10b+a。(10b+a) - (10a+b) = 27，a+b=13。解得a=5，b=8，原数为58。", analysis: "设十位为a，个位为b。原数=10a+b，新数=10b+a。差=9(b-a)=27，故b-a=3；又a+b=13，解得a=5，b=8。"}
+        ];
+
+        // 合并所有题目
+        const allQuestions = [...questions, ...moreQuestions];
+
+        // 状态
+        let currentIndex = 0;
+        let wrongQuestions = [];
+        let completedQuestions = [];
+        let selectedAnswer = null;
+        let isSubmitted = false;
+        let studyRecords = [];
+
+        // 初始化
+        function init() {
+            renderPagination();
+            showQuestion(0);
+            updateStats();
+            loadRecords();
+        }
+
+        // 渲染分页
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            
+            for (let i = 0; i < allQuestions.length; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'page-btn';
+                btn.textContent = i + 1;
+                if (completedQuestions.includes(i)) {
+                    btn.style.background = '#4caf50';
+                    btn.style.color = 'white';
+                }
+                btn.onclick = () => showQuestion(i);
+                pagination.appendChild(btn);
+            }
+        }
+
+        // 显示题目
+        function showQuestion(index) {
+            currentIndex = index;
+            const q = allQuestions[index];
+            
+            document.getElementById('questionNum').textContent = `第${index + 1}题`;
+            document.getElementById('questionType').textContent = q.type;
+            document.getElementById('questionDifficulty').textContent = q.difficultyText;
+            document.getElementById('questionDifficulty').className = `question-difficulty difficulty-${q.difficulty}`;
+            document.getElementById('questionContent').innerHTML = q.content;
+            
+            // 渲染选项或输入框
+            const optionsContainer = document.getElementById('optionsContainer');
+            const answerInput = document.getElementById('answerInput');
+            
+            if (q.type === '解答题') {
+                optionsContainer.style.display = 'none';
+                answerInput.style.display = 'block';
+                answerInput.value = '';
+            } else {
+                optionsContainer.style.display = 'flex';
+                answerInput.style.display = 'none';
+                
+                optionsContainer.innerHTML = q.options.map((opt, i) => {
+                    const letter = String.fromCharCode(65 + i);
+                    return `<div class="option" onclick="selectOption('${letter}')">
+                        <span class="option-letter">${letter}</span>
+                        <span>${opt.substring(3)}</span>
+                    </div>`;
+                }).join('');
+            }
+            
+            // 重置状态
+            selectedAnswer = null;
+            isSubmitted = false;
+            document.getElementById('analysis').classList.remove('show');
+            document.getElementById('submitBtn').textContent = '提交答案';
+            document.getElementById('submitBtn').disabled = false;
+            
+            // 更新分页
+            document.querySelectorAll('.page-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+        }
+
+        // 选择选项
+        function selectOption(letter) {
+            if (isSubmitted) return;
+            
+            selectedAnswer = letter;
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+                if (opt.querySelector('.option-letter').textContent === letter) {
+                    opt.classList.add('selected');
+                }
+            });
+        }
+
+        // 提交答案
+        function submitAnswer() {
+            const q = allQuestions[currentIndex];
+            
+            if (q.type === '解答题') {
+                selectedAnswer = document.getElementById('answerInput').value.trim();
+            }
+            
+            if (!selectedAnswer) {
+                alert('请选择一个答案！');
+                return;
+            }
+            
+            isSubmitted = true;
+            const isCorrect = selectedAnswer === q.answer;
+            
+            // 显示结果
+            if (q.type !== '解答题') {
+                document.querySelectorAll('.option').forEach(opt => {
+                    const letter = opt.querySelector('.option-letter').textContent;
+                    if (letter === q.answer) {
+                        opt.classList.add('correct');
+                    } else if (letter === selectedAnswer && !isCorrect) {
+                        opt.classList.add('wrong');
+                    }
+                });
+            }
+            
+            // 记录
+            if (!completedQuestions.includes(currentIndex)) {
+                completedQuestions.push(currentIndex);
+            }
+            
+            if (!isCorrect) {
+                if (!wrongQuestions.includes(currentIndex)) {
+                    wrongQuestions.push(currentIndex);
+                }
+                document.getElementById('wrongList').innerHTML = renderWrongList();
+            }
+            
+            // 保存记录
+            const record = {
+                questionId: q.id,
+                question: q.content.substring(0, 30) + '...',
+                answer: selectedAnswer,
+                correct: q.answer,
+                isCorrect: isCorrect,
+                time: new Date().toLocaleString()
+            };
+            studyRecords.unshift(record);
+            localStorage.setItem('math_study_records', JSON.stringify(studyRecords));
+            
+            // 显示解析
+            document.getElementById('analysisContent').innerHTML = `
+                <strong>正确答案：${q.answer}</strong><br><br>
+                ${q.analysis}
+            `;
+            document.getElementById('analysis').classList.add('show');
+            document.getElementById('submitBtn').textContent = isCorrect ? '✅ 回答正确！' : '❌ 回答错误';
+            document.getElementById('submitBtn').disabled = true;
+            
+            updateStats();
+            renderPagination();
+        }
+
+        // 下一题
+        function nextQuestion() {
+            if (currentIndex < allQuestions.length - 1) {
+                showQuestion(currentIndex + 1);
+            } else {
+                alert('已经是最后一题了！');
+            }
+        }
+
+        // 更新统计
+        function updateStats() {
+            document.getElementById('totalQuestions').textContent = allQuestions.length;
+            document.getElementById('completedQuestions').textContent = completedQuestions.length;
+            document.getElementById('wrongCount').textContent = wrongQuestions.length;
+            
+            const correct = completedQuestions.length - wrongQuestions.length;
+            const rate = completedQuestions.length > 0 ? Math.round((correct / completedQuestions.length) * 100) : 0;
+            document.getElementById('correctRate').textContent = rate + '%';
+        }
+
+        // 渲染错题列表
+        function renderWrongList() {
+            if (wrongQuestions.length === 0) {
+                return '<div class="empty-state">暂无错题，继续加油！💪</div>';
+            }
+            
+            return wrongQuestions.map(idx => {
+                const q = allQuestions[idx];
+                return `<div class="wrong-item" onclick="showQuestion(${idx})">
+                    <div>第${idx + 1}题</div>
+                    <div style="color:#999;font-size:0.9rem;">${q.content.substring(0, 30)}...</div>
+                </div>`;
+            }).join('');
+        }
+
+        // 加载记录
+        function loadRecords() {
+            const saved = localStorage.getItem('math_study_records');
+            if (saved) {
+                studyRecords = JSON.parse(saved);
+                document.getElementById('recordsList').innerHTML = studyRecords.slice(0, 10).map(r => `
+                    <div class="record-item">
+                        <span>${r.question}</span>
+                        <span style="color: ${r.isCorrect ? '#4caf50' : '#f44336'}">${r.isCorrect ? '✓' : '✗'}</span>
+                    </div>
+                `).join('') || '<div class="empty-state">暂无学习记录</div>';
+                
+                // 更新徽章
+                if (completedQuestions.length >= 1) document.getElementById('badge1').classList.add('earned');
+                if (completedQuestions.length >= 10) document.getElementById('badge2').classList.add('earned');
+                const correct = completedQuestions.length - wrongQuestions.length;
+                if (completedQuestions.length > 0 && correct / completedQuestions.length >= 0.8) {
+                    document.getElementById('badge3').classList.add('earned');
+                }
+            }
+        }
+
+        // 切换区块
+        function showSection(section) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById('practiceSection').classList.remove('active');
+            document.getElementById('wrongbookSection').classList.remove('show');
+            document.getElementById('recordsSection').classList.remove('show');
+            
+            if (section === 'practice') {
+                document.getElementById('practiceSection').classList.add('active');
+            } else if (section === 'wrongbook') {
+                document.getElementById('wrongbookSection').classList.add('show');
+            } else if (section === 'records') {
+                document.getElementById('recordsSection').classList.add('show');
+            }
+        }
+
+        // 启动
+        init();
+    </script>
+</body>
+</html>
